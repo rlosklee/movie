@@ -1,0 +1,245 @@
+<meta charset="utf-8">
+<title>인생영화 추천기 — 발표자료</title>
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f37f.png">
+<style>
+  :root {
+    /* 초록 계열 팔레트 — 값만 바꾸면 전체 톤이 함께 바뀝니다 */
+    --green-900: #1b5e20;
+    --green-700: #2e7d32;
+    --green-500: #43a047;
+    --green-300: #81c784;
+    --green-100: #e8f5e9;
+    --ink: #1f2a24;
+    --muted: #5c6b62;
+    --bg: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  /* 한 장 = 화면 전체. 활성 슬라이드만 보입니다 */
+  .slide {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6vh 10vw;
+    animation: fade .35s ease;
+  }
+  .slide.active { display: flex; }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 슬라이드 상단의 얇은 초록 띠 */
+  .slide::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--green-700), var(--green-300));
+  }
+
+  /* 한 장에 핵심 메시지 하나 — 크게 */
+  h1 { font-size: 4.4vw; line-height: 1.2; color: var(--green-900); font-weight: 800; }
+  h2 { font-size: 3.2vw; line-height: 1.25; color: var(--green-900); font-weight: 700; margin-bottom: 3vh; }
+  p  { font-size: 1.7vw; line-height: 1.6; color: var(--muted); max-width: 46ch; }
+  .lead { font-size: 2.1vw; color: var(--green-700); margin-top: 2vh; font-weight: 600; }
+
+  /* 표지 */
+  .cover h1 { font-size: 5.2vw; }
+  .cover .sub { font-size: 2vw; color: var(--muted); margin-top: 3vh; }
+  .cover .meta { font-size: 1.3vw; color: var(--muted); margin-top: 6vh; }
+
+  /* 목차 */
+  .toc ol { list-style: none; text-align: left; margin-top: 2vh; }
+  .toc li {
+    font-size: 2vw; color: var(--ink); padding: 1.4vh 0;
+    display: flex; align-items: center; gap: 1.2vw;
+  }
+  .toc li span {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.6vw; height: 2.6vw; min-width: 34px; min-height: 34px;
+    border-radius: 50%; background: var(--green-100); color: var(--green-700);
+    font-weight: 700; font-size: 1.4vw;
+  }
+
+  /* 차트 자리 */
+  .chart { width: min(70vw, 900px); margin: 3vh auto 0; }
+  .chart svg { width: 100%; height: auto; }
+
+  /* 마무리 */
+  .closing { background: var(--green-900); }
+  .closing::before { opacity: 0; }
+  .closing h1, .closing h2 { color: #fff; }
+  .closing p { color: var(--green-100); }
+
+  /* 하단 슬라이드 번호 */
+  #counter {
+    position: fixed; bottom: 3vh; right: 4vw;
+    font-size: 1.1vw; color: var(--muted); z-index: 10;
+  }
+  .closing ~ #counter, body.on-dark #counter { color: var(--green-100); }
+</style>
+
+<!-- ============================================================
+     슬라이드들. 순서: 표지 → 목차 → 본문(여러 장) → 마무리
+     한 장에 핵심 메시지 하나만!
+     ============================================================ -->
+
+<!-- 표지 -->
+<section class="slide cover active">
+  <h1>🎬 인생영화 추천기</h1>
+  <div class="sub">구글 시트로 만든 나의 첫 웹앱</div>
+  <div class="meta">이은석 · 2026.07</div>
+</section>
+
+<!-- 목차 -->
+<section class="slide toc">
+  <h2>목차</h2>
+  <ol>
+    <li><span>1</span> 무엇을 만들었나</li>
+    <li><span>2</span> 어떻게 작동하나</li>
+    <li><span>3</span> 배운 것</li>
+  </ol>
+</section>
+
+<!-- 본문 1: 무엇을 만들었나 -->
+<section class="slide">
+  <h2>세 가지만 고르면,<br>오늘의 인생영화를 찾아드립니다</h2>
+  <p class="lead">어떤 장르 · 어떤 기분 · 누구와 함께</p>
+</section>
+
+<!-- 본문 2: 데이터 (실제 시트의 영화 16편 장르 분포) -->
+<section class="slide">
+  <h2>영화는 코드가 아니라<br>구글 시트에 들어 있습니다</h2>
+  <div class="chart"
+       data-chart="bar"
+       data-labels="드라마,액션·스릴러,애니메이션,로맨스,SF·판타지,코미디"
+       data-values="10,5,5,4,3,3"
+       data-unit="편 (전체 16편)"></div>
+</section>
+
+<!-- 본문 3: 구조 -->
+<section class="slide">
+  <h2>화면은 GitHub,<br>데이터는 구글 시트가 맡습니다</h2>
+  <p class="lead">Apps Script가 그 둘을 이어주는 창구 역할을 합니다.</p>
+</section>
+
+<!-- 본문 4: 배운 것 -->
+<section class="slide">
+  <h2>시트 한 줄만 고치면<br>앱이 바뀝니다</h2>
+  <p class="lead">코드를 몰라도 데이터를 바꿀 수 있게 만드는 것 —
+     그게 이 구조의 진짜 쓸모였습니다.</p>
+</section>
+
+<!-- 마무리 -->
+<section class="slide closing">
+  <h1>감사합니다</h1>
+  <p>직접 해보세요 · rlosklee.github.io/movie</p>
+</section>
+
+<div id="counter"></div>
+
+<script>
+  /* ---------- 슬라이드 이동: 좌우 화살표 ---------- */
+  const slides = [...document.querySelectorAll('.slide')];
+  let cur = slides.findIndex(s => s.classList.contains('active'));
+  if (cur < 0) cur = 0;
+
+  function show(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === cur));
+    document.body.classList.toggle('on-dark', slides[cur].classList.contains('closing'));
+    counter.textContent = (cur + 1) + ' / ' + slides.length;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { show(cur + 1); e.preventDefault(); }
+    if (['ArrowLeft',  'ArrowUp',       'PageUp'  ].includes(e.key)) { show(cur - 1); e.preventDefault(); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End')  show(slides.length - 1);
+  });
+  // 화면 클릭으로도 다음 장 (왼쪽 1/4 클릭은 이전 장)
+  document.addEventListener('click', e => show(e.clientX < innerWidth * 0.25 ? cur - 1 : cur + 1));
+
+  /* ---------- 숫자 데이터 → 인라인 SVG 차트 ---------- */
+  const GREEN = { bar: '#43a047', barTop: '#2e7d32', line: '#2e7d32', dot: '#1b5e20', axis: '#c8dccb', text: '#5c6b62' };
+
+  function renderBar(el, labels, values, unit) {
+    const W = 900, H = 460, padL = 60, padR = 20, padT = 30, padB = 60;
+    const max = Math.max(...values) * 1.15 || 1;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const bw = iw / values.length * 0.55, gap = iw / values.length;
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`;
+    // 가로 격자선 + 눈금
+    for (let g = 0; g <= 4; g++) {
+      const y = padT + ih - (ih * g / 4);
+      const v = Math.round(max * g / 4);
+      s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${GREEN.axis}" stroke-width="1"/>`;
+      s += `<text x="${padL - 10}" y="${y + 5}" text-anchor="end" font-size="16" fill="${GREEN.text}">${v}</text>`;
+    }
+    values.forEach((v, i) => {
+      const x = padL + gap * i + (gap - bw) / 2;
+      const h = ih * (v / max);
+      const y = padT + ih - h;
+      s += `<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="6" fill="${GREEN.bar}"/>`;
+      s += `<text x="${x + bw / 2}" y="${y - 12}" text-anchor="middle" font-size="19" font-weight="700" fill="${GREEN.barTop}">${v}</text>`;
+      s += `<text x="${x + bw / 2}" y="${H - padB + 28}" text-anchor="middle" font-size="17" fill="${GREEN.text}">${labels[i] ?? ''}</text>`;
+    });
+    if (unit) s += `<text x="${W - padR}" y="${padT - 10}" text-anchor="end" font-size="15" fill="${GREEN.text}">단위: ${unit}</text>`;
+    s += `</svg>`;
+    el.innerHTML = s;
+  }
+
+  function renderLine(el, labels, values, unit) {
+    const W = 900, H = 460, padL = 60, padR = 30, padT = 30, padB = 60;
+    const max = Math.max(...values) * 1.15 || 1;
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const xAt = i => padL + (iw * i / Math.max(1, values.length - 1));
+    const yAt = v => padT + ih - ih * (v / max);
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="inherit">`;
+    for (let g = 0; g <= 4; g++) {
+      const y = padT + ih - (ih * g / 4);
+      const v = Math.round(max * g / 4);
+      s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${GREEN.axis}" stroke-width="1"/>`;
+      s += `<text x="${padL - 10}" y="${y + 5}" text-anchor="end" font-size="16" fill="${GREEN.text}">${v}</text>`;
+    }
+    // 면적 채우기
+    const area = `M ${xAt(0)} ${padT + ih} ` + values.map((v, i) => `L ${xAt(i)} ${yAt(v)}`).join(' ') + ` L ${xAt(values.length - 1)} ${padT + ih} Z`;
+    s += `<path d="${area}" fill="${GREEN.line}" opacity="0.10"/>`;
+    // 선
+    const line = values.map((v, i) => `${i ? 'L' : 'M'} ${xAt(i)} ${yAt(v)}`).join(' ');
+    s += `<path d="${line}" fill="none" stroke="${GREEN.line}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    // 점 + 값 + x축 라벨
+    values.forEach((v, i) => {
+      s += `<circle cx="${xAt(i)}" cy="${yAt(v)}" r="6" fill="${GREEN.dot}"/>`;
+      s += `<text x="${xAt(i)}" y="${yAt(v) - 16}" text-anchor="middle" font-size="18" font-weight="700" fill="${GREEN.dot}">${v}</text>`;
+      s += `<text x="${xAt(i)}" y="${H - padB + 28}" text-anchor="middle" font-size="17" fill="${GREEN.text}">${labels[i] ?? ''}</text>`;
+    });
+    if (unit) s += `<text x="${W - padR}" y="${padT - 10}" text-anchor="end" font-size="15" fill="${GREEN.text}">단위: ${unit}</text>`;
+    s += `</svg>`;
+    el.innerHTML = s;
+  }
+
+  document.querySelectorAll('.chart[data-chart]').forEach(el => {
+    const labels = (el.dataset.labels || '').split(',').map(x => x.trim());
+    const values = (el.dataset.values || '').split(',').map(Number);
+    const unit = el.dataset.unit || '';
+    (el.dataset.chart === 'line' ? renderLine : renderBar)(el, labels, values, unit);
+  });
+
+  show(cur);
+</script>
